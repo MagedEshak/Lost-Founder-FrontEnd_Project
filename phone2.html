@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phone Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #383848;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #383848;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    h2 {
+      font-size: 22px;
+    }
+    .bold {
+      font-weight: bold;
+    }
+    input {
+      width: 250px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .upload-section {
+      text-align: center;
+    }
+    .upload-section img {
+      width: 320px;
+      height: 380px;
+      border-radius: 5px;
+    }
+    .upload-text {
+      font-size: 14px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+    .submit-btn {
+      background-color: #e4b95b;
+      color: #383848;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .submit-btn:hover {
+      background-color: red;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <form class="container find-phone-form">
+    <div class="form">
+      <h2>Register <span class="bold">Phone</span> Details..</h2>
+
+      <label for="phone-brand">Phone Brand</label>
+      <input list="brands" id="phone-brand" name="Brand">
+      <datalist id="brands">
+        <option value="Samsung">
+        <option value="Apple">
+        <option value="Huawei">
+        <option value="Xiaomi">
+        <option value="Sony">
+        <option value="Infinix">
+        <option value="Realme">
+      </datalist>
+
+      <label for="phone-color">Phone Color</label>
+      <input list="colors" id="phone-color" name="Color">
+      <datalist id="colors">
+        <option value="Black">
+        <option value="White">
+        <option value="Red">
+        <option value="Blue">
+        <option value="Green">
+      </datalist>
+
+      <h3 class="bold">Address 🏠</h3>
+      <label>Government</label>
+      <input type="text" id="government" name="Government">
+
+      <label>Center</label>
+      <input type="text" id="center" name="Center">
+
+      <label>Street</label>
+      <input type="text" id="street" name="Street">
+
+      <h3 class="bold">Way to communicate</h3>
+      <div class="row">
+        <input type="email" placeholder="Email" id="email" name="Email">
+        <input type="text" placeholder="Serial number" id="serial_number" name="PhoneNumber">
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <img src="images/5827681635083077585.jpg" alt="Phone Image">
+      <div class="upload-text" onclick="document.getElementById('fileInput').click();">⬆ Upload Image</div>
+      <input type="file" id="fileInput" name="PhonePhoto" style="display: none;" accept="image/*" onchange="previewImage(event)">
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+  </form>
+
+  <script>
+    function previewImage(event) {
+      const imgElement = document.querySelector(".upload-section img");
+      imgElement.src = URL.createObjectURL(event.target.files[0]);
+    }
+  </script>
+  <script src="js/find_phone.js"></script>
+</body>
+</html>

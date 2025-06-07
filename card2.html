@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card find Registration</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #383848;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    gap: 50px;
+    padding: 20px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+input {
+    width: 250px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-section img {
+    width: 250px;
+    height: 250px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.upload-text {
+    font-size: 14px;
+    margin-top: 8px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.submit-btn {
+    background-color: red;
+    width: 130px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+    </style>
+</head>
+<body>
+    
+    <form action="#" class="container register-card-2-form">
+        <div class="form">
+            <h2>Register <span class="bold">Personal card</span> Details..</h2>
+
+            <label>National ID</label>
+            <input type="text" placeholder="national_id"  id="national_id">
+
+            <h3 class="bold">Address 🏠</h3>
+            <label>Government</label>
+            <input type="text" id="government">
+            <label>Center</label>
+            <input type="text" id="center">
+            <label>Street</label>
+            <input type="text" id="street">
+            
+            <h3 class="bold">Way to communicate</h3>
+            <input type="email" placeholder="e-mail" id="email">
+
+            <button class="submit-btn" type="submit">Submit</button>
+        </div>
+
+        <div class="upload-section">
+            <img src="images/card.jpg" alt="Card Image" id="preview">
+            <div class="upload-text" onclick="document.getElementById('fileInput').click();">⬆ Upload Image</div>
+            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="previewImage(event)">
+        </div>
+    </form>
+    <script src="js/find_card.js"></script>
+    <script>
+        function previewImage(event) {
+            const imgElement = document.getElementById("preview");
+            imgElement.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
+
+
+<!--++++++++++++++++++++++++++-->
