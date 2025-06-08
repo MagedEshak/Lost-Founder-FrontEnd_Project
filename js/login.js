@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("type", data["type"]);
 
             // الانتقال إلى صفحة الهوم
-            window.location.href = "Home.html";
+            window.location.replace("../../index.html");
           } else {
             const errorData = await response.text();
             console.log("Login failed:", errorData);

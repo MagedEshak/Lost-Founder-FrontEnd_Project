@@ -88,9 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           // Show loading state
           const submitBtn = document.getElementById("submit");
-          const originalBtnText = submitBtn.value;
-          submitBtn.value = "Registering...";
-          submitBtn.disabled = true;
 
           const formData = new FormData();
           formData.append("UserName", UserName);
@@ -110,14 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (response.ok) {
             // Redirect to login page
-            window.location.href = "login.html";
+            window.location.replace("login.html");
           } else {
             const errorData = await response.json();
             alert(errorData.message || "Registration failed");
           }
         } catch (error) {
           console.error("Registration error:", error);
-          alert(error.message);
+          alert(
+            `Registration error in Phone Number Or Email Or ID must be unique: ${error}`
+          );
         } finally {
           // Reset button state
           const submitBtn = document.getElementById("submit");
@@ -143,12 +142,12 @@ document.addEventListener("DOMContentLoaded", function () {
       authLink.onclick = function (e) {
         e.preventDefault();
         localStorage.removeItem("token");
-        window.location.href = "Home.html"; // Redirect to home after logout
+        window.location.replace("../index.html"); // Redirect to home after logout
       };
     } else {
       // User is not logged in - show Login
       authLink.textContent = "Login";
-      authLink.href = "login.html";
+      authLink.href = "/htmlStaticFiles/Registeration Pages/login.html";
       authLink.onclick = null;
     }
   }
@@ -159,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleLogout(e) {
     // e.preventDefault(); // Prevent default link behavior
     localStorage.removeItem("token"); // Remove the token
-    window.location.href = "Home.html"; // Redirect to home page
+    window.location.href = "../index.html"; // Redirect to home page
   }
 
   // Get the stored user type from localStorage
