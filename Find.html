@@ -1,80 +1,53 @@
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصميم مفقود</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f9f9f9;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .title {
-            font-size: 24px;
-        }
-        .title span {
-            color: red;
-            font-weight: bold;
-        }
-        .options {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        .option {
-            width: 220px;
-            text-align: center;
-            margin: 0 20px;
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        .option img {
-            width: 100px;
-            height: auto;
-            margin-top: 10px;
-        }
-        .option h3 {
-            background-color: #383848;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-        .options a{
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-</br>
-</br>
-    <div class="container">
-        <h2 class="title">if you <span>lost or Find</span> something...</h2>
-        <p class="title"><b>identify what you have</b> <span>lost</span></p>
-    </br>
-</br>
-</br>
+    <title>Lost or Find</title>
+    <link rel="shortcut icon" href="icons/search.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/find.css">
 
-        <div class="options">
+    <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <!-- Start HEADER-->
+    <header>
+        <div id="navbar">
+            <a href="Home.html"> <img src="images/find it.png"></a>
+        </div>
+    </header>
+    <!-- END HEADER-->
+
+    <main class="container">
+        <div class="row text-center">
+            <h2 class="title">If you <span>Lost or Find</span> something...</h2>
+            <p class="title">Please choose one ....</p>
+        </div>
+
+        <div class="options mt-5">
             <div class="option">
-                <a href="findfind.html" target="_blank"><h3>Find Things</h3></a>
+                <a href="findfind.html" class="link-opacity-25-hover">
+                    <h3>Find Things</h3>
+                </a>
                 <img src="images/5827681635083077559.jpg" alt="Personal card">
             </div>
             <div class="option">
-                <a href="lostlost.html" target="_blank"><h3>Lost Things</h3></a> 
+
+                <a href="lostlost.html">
+                    <h3> Lost Things</h3>
+                </a>
                 <img src="images/5827681635083077564.jpg" alt="Phone">
             </div>
         </div>
-    </div>
-
+    </main>
 
     <script src="project.js"></script>
-
+    <script src="bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
 </body>
+
 </html>

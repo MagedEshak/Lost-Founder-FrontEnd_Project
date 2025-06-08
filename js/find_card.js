@@ -1,57 +1,154 @@
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
+  $("#register-card-2-form").on("submit", async function (e) {
+    e.preventDefault();
 
-    const registerCardForm = document.querySelector(".register-card-2-form");
-    if (registerCardForm) {
-        registerCardForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-    
-            const CardID = document.getElementById('national_id').value.trim();
-            const Government = document.getElementById('government').value.trim();
-            const Center = document.getElementById('center').value.trim();
-            const Street = document.getElementById('street').value.trim();
-            const fileInput = document.getElementById('fileInput').value;
-            const FinderEmail = document.getElementById('email').value.trim();
-    
-    
-            if (!CardID || !Government|| !Center || !Street) {
-                alert("Data are required!");
-                return;
-            }
-    
-            try {
-                const token = localStorage.getItem('token');
-                const formData = new FormData();
-                formData.append("CardID", CardID);
-                formData.append("Government", Government);
-                formData.append("Center", Center);
-                formData.append("Street", Street);
-                formData.append("fileInput", fileInput);
-                formData.append("FinderEmail", FinderEmail);
-                
-                
-                const response = await fetch("https://localhost:7043/api/Find_Card/Add find Card", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        "Authorization": `Bearer ${token}`  // Include JWT token in the header
-                    }
-                });
-    
-                if (response.ok) {
-                    const data = await response.text();
-                    console.log("success add")
-                    // الانتقال إلى صفحة الهوم
-                    window.location.href ="card2.html";
-                } else {
-                    const errorData = await response.text();
-                    console.log("Submit failed:", errorData);
-                    alert("Submit failed: " + errorData);
-                }
-            } catch (error) {
-                console.error("Submit error:", error);
-                alert("An error occurred during Submit  .");
-            }
-        });
+    $(".error-msg").text("");
+
+    const CardID = $("#national_id").val().trim();
+    const Government = $("#government").val().trim();
+    const Center = $("#center").val().trim();
+    const Street = $("#street").val().trim();
+    const File = $("#fileInput")[0].files[0];
+    const FinderEmail = $("#email").val().trim();
+
+    let hasError = false;
+
+    if (!CardID) {
+      $("#err_national_id").text("National ID is required");
+      hasError = true;
+    } else if (!/^\d{14}$/.test(CardID)) {
+      $("#err_national_id").text("National ID must be 14 digits");
+      hasError = true;
     }
 
+    if (!Government) {
+      $("#err_government").text("Government is required");
+      hasError = true;
+    }
+
+    if (!Center) {
+      $("#err_center").text("City is required");
+      hasError = true;
+    }
+
+    if (!Street) {
+      $("#err_street").text("Street is required");
+      hasError = true;
+    }
+
+    if (!File) {
+      $("#err_fileInput").text("Please upload a card image");
+      hasError = true;
+    }
+
+    if (!FinderEmail || !/\S+@\S+\.\S+/.test(FinderEmail)) {
+      $("#err_email").text("Valid email is required");
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("CardID", CardID);
+      formData.append("Government", Government);
+      formData.append("Center", Center);
+      formData.append("Street", Street);
+      formData.append("fileInput", File);
+      formData.append("FinderEmail", FinderEmail);
+
+      const response = await fetch(
+        "https://localhost:7043/api/Find_Card/Add_Find_Card",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        ShowBootstrapToast(
+          "Card added successfully. What would you like to do next?",
+          "success",
+          true
+        );
+      } else {
+        const errorData = await response.text();
+        ShowBootstrapToast("Error: " + errorData, "danger");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      ShowBootstrapToast("Unexpected error occurred", "danger");
+    }
+  });
 });
+
+// -----------------------  TostBox (Popup Message)    ----------------------------------
+window.ShowBootstrapToast = function (
+  message,
+  type = "Info",
+  withButtons = false
+) {
+  const toastId = "custom-toast-" + Date.now();
+  const toastHTML = `
+        <div id="${toastId}" class="toast align-items-center text-white bg-${type.toLowerCase()} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body w-100">
+                    ${message}
+                    ${
+                      withButtons
+                        ? `
+                    <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Add Another</button>
+                        <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Go Home</button>
+                    </div>`
+                        : ""
+                    }
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    `;
+
+  let toastContainer = document.getElementById("toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.id = "toast-container";
+    toastContainer.className =
+      "toast-container position-fixed bottom-0 end-0 p-3";
+    document.body.appendChild(toastContainer);
+  }
+
+  toastContainer.innerHTML += toastHTML;
+
+  const toastElement = document.getElementById(toastId);
+  const toast = new bootstrap.Toast(toastElement, { delay: 7000 });
+  toast.show();
+
+  if (withButtons) {
+    toastElement
+      .querySelector("#btn-add-new")
+      .addEventListener("click", function () {
+        $("#register-card-2-form")[0].reset();
+        $("#preview").attr(
+          "src",
+          "images/id-card-illustration_23-2147829294.avif"
+        );
+        $(".error-msg").text("");
+        toast.hide();
+      });
+
+    toastElement
+      .querySelector("#btn-go-home")
+      .addEventListener("click", function () {
+        window.location.href = "Home.html";
+      });
+  }
+
+  toastElement.addEventListener("hidden.bs.toast", function () {
+    toastElement.remove();
+  });
+};

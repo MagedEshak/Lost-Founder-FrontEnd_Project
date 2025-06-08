@@ -32,28 +32,17 @@
             <form action="#" class="container d-flex flex-row justify-content-evenly" id="lost-phone-form"
                 enctype="multipart/form-data">
                 <div class="col-5 d-flex flex-column gap-3">
+
                     <div class="mb-3">
-                        <label for="lostSearch" class="form-label">What are you looking for?</label>
-                        <select name="SearchTyp" id="lostSearch" class="list-group p-2 w-100">
-                            <option disabled selected>Choose what you lost....</option>
-                            <option value="Phone">Mobile Phone</option>
-                            <option value="card">Card ID</option>
-                        </select>
-                        <span class="text-danger error-msg" id="err_lostSearch_id"></span>
-                    </div>
-
-
-                    <div class="mb-3 d-none" id="searchType_Id">
-                        <label for="SearchTypID" class="form-label">Search type</label>
-                        <select name="SearchTyp" id="SearchTypID" class="list-group p-2 w-100">
-                            <option disabled selected>Select the type of search</option>
+                        <label for="SearchTyp" class="form-label">Search type</label>
+                        <select name="brandName" id="SearchTyp" class="list-group p-2">
+                            <option disabled selected>Select how will you search?!</option>
                             <option value="Text">Text</option>
                             <option value="Image">Image</option>
                             <option value="Both">Both</option>
                         </select>
                         <span class="text-danger error-msg" id="err_SearchTyp_id"></span>
                     </div>
-
 
                     <div class="mb-3">
                         <label class="form-label" for="email">Email</label>
@@ -72,8 +61,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="js/investigations.js"></script>
-    <!-- <script src="js/getAllLostItems.js"></script> -->
+    <!-- JavaScript الخاص بالإرسال -->
+    <script src=""></script>
 </body>
 
 </html>
