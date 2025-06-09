@@ -29,13 +29,13 @@
                 <h2>Get All Items...</h2>
             </div>
 
-            <form action="#" class="container d-flex flex-row justify-content-evenly" id="lost-phone-form"
+            <form action="#" class="container d-flex flex-row justify-content-evenly" id="Check-lostItems-form"
                 enctype="multipart/form-data">
                 <div class="col-5 d-flex flex-column gap-3">
                     <div class="mb-3">
                         <label for="lostSearch" class="form-label">What are you looking for?</label>
                         <select name="SearchTyp" id="lostSearch" class="list-group p-2 w-100">
-                            <option disabled selected>Choose what you lost....</option>
+                            <option value="" disabled selected>Choose what you lost....</option>
                             <option value="Phone">Mobile Phone</option>
                             <option value="card">Card ID</option>
                         </select>
@@ -43,10 +43,10 @@
                     </div>
 
 
-                    <div class="mb-3 d-none" id="searchType_Id">
+                    <div class="mb-3 d-none flex-column" id="searchType_div">
                         <label for="SearchTypID" class="form-label">Search type</label>
                         <select name="SearchTyp" id="SearchTypID" class="list-group p-2 w-100">
-                            <option disabled selected>Select the type of search</option>
+                            <option value="" disabled selected>Select the type of search</option>
                             <option value="Text">Text</option>
                             <option value="Image">Image</option>
                             <option value="Both">Both</option>

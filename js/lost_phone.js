@@ -81,11 +81,7 @@ $(document).ready(function () {
       );
 
       if (response.ok) {
-        ShowBootstrapToast(
-          "Card added successfully. What would you like to do next?",
-          "success",
-          true
-        );
+        ShowBootstrapToast("Cards Found", "success", true);
       } else {
         const errorData = await response.text();
         ShowBootstrapToast("Error: " + errorData, "danger");
@@ -155,9 +151,8 @@ window.ShowBootstrapToast = function (
     toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        window.location.replace(
-          "../htmlStaticFiles/Investenation Page/Investigations.html"
-        );
+        resetForm();
+        window.location.replace("../InvestenationPage/Investigations.html");
       });
   }
 
@@ -165,3 +160,16 @@ window.ShowBootstrapToast = function (
     toastElement.remove();
   });
 };
+
+function resetForm() {
+ 
+
+  $("#serial_number").val() = "";
+  $("#brandID").val() = "";
+  $("#color").val()= "";
+  $("#government").val()= "";
+  $("#center").val()= "";
+  $("#street").val()= "";
+  $("#fileInput")[0].files[0]= "";
+  $("#email").val()= "";
+}

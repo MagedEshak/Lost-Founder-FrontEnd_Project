@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         itemsList.innerHTML = '<div class="item">No items found</div>';
       } else {
         items.forEach((item) => {
-          const itemElement = document.createElement("div");
           itemElement.className = "item";
           itemElement.textContent = JSON.stringify(item, null, 2);
           itemsList.appendChild(itemElement);
