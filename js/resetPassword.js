@@ -82,5 +82,5 @@ function showAlert(message, type = "success") {
   // Auto-hide after 3 seconds
   setTimeout(() => {
     alertBox.classList.add("d-none");
-  }, 3000);
+  }, 9000);
 }

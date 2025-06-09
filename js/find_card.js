@@ -144,7 +144,7 @@ window.ShowBootstrapToast = function (
     toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        window.location.assign("../index.html");
+        window.location.replace("../../index.html");
       });
   }
 
