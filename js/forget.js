@@ -45,20 +45,12 @@ document
       }
     } catch (error) {
       // showAlert("Something went wrong. Try again", "info");
-      ShowBootstrapToast("Something went wrong. Try again", "info");
+      ShowBootstrapToast("Something went wrong. Try again", "danger");
     }
   });
-// function showAlert(message, type = "success") {
-//   const alertBox = document.getElementById("alertBox");
-//   alertBox.textContent = message;
-//   alertBox.className = `alert alert-${type} mt-3`; // success, danger, warning, etc.
-//   alertBox.classList.remove("d-none");
 
-//   // Auto-hide after 3 seconds
-//   setTimeout(() => {
-//     alertBox.classList.add("d-none");
-//   }, 3000);
-// }
+  
+//----------------------------------------------------------------------------------------
 window.ShowBootstrapToast = function (
   message,
   type = "Info",

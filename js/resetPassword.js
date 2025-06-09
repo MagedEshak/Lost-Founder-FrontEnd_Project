@@ -69,7 +69,7 @@ document
         ShowBootstrapToast("Failed to reset password", "danger");
       }
     } catch (error) {
-      ShowBootstrapToast("Something went wrong.", "info");
+      ShowBootstrapToast("Something went wrong.", "danger");
     }
   });
 
