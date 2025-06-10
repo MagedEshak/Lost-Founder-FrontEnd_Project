@@ -23,7 +23,7 @@ document
 
     try {
       const response = await fetch(
-        "https://localhost:7043/api/Auth/RequestPasswordReset",
+        "http://localhost:5194/api/Auth/RequestPasswordReset",
         {
           method: "POST",
           body: JSON.stringify({ email }),

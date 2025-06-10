@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("CardID", CardID);
 
         const response = await fetch(
-          "https://localhost:7043/api/Auth/AddManager",
+          "hhttp://localhost:5194/api/Auth/AddManager",
           {
             method: "POST",
             body: formData,

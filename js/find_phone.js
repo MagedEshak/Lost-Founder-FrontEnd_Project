@@ -63,7 +63,7 @@ $(document).ready(function () {
       formData.append("FinderEmail", FinderEmail);
 
       const response = await fetch(
-        "https://localhost:7043/api/Find_Phone/Add find phone",
+        "http://localhost:5194/api/Find_Phone/Add find phone",
         {
           method: "POST",
           body: formData,

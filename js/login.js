@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
           formData.append("Password", Password);
 
           const response = await fetch(
-            "https://localhost:7043/api/Auth/Login",
+            "http://localhost:5194/api/Auth/Login",
             {
               method: "POST",
               body: formData,

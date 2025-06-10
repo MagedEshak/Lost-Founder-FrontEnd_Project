@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://localhost:7043/api/Checking_For_Items/get-all-items?email=${encodeURIComponent(
+        `http://localhost:5194/api/Checking_For_Items/get-all-items?email=${encodeURIComponent(
           email
         )}`,
         {

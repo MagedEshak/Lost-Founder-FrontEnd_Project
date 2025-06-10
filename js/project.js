@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Make API request
           const response = await fetch(
-            "https://localhost:7043/api/Auth/Register",
+            "http://localhost:5194/api/Auth/Register",
             {
               method: "POST",
               body: formData,
