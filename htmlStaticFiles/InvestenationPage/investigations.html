@@ -3,21 +3,26 @@
 
 <head>
     <style>
-  .loader {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: auto;
-  }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-</style>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Check Items Form</title>
@@ -28,10 +33,7 @@
 </head>
 
 <body>
-    <div id="spinner" style="display: none;">
-  <div class="loader"></div>
-</div>
-   
+
     <main class="container d-flex flex-column mb-5">
         <!-- HEADER -->
         <header class="m-5">
@@ -90,6 +92,17 @@
             </form>
         </section>
 
+
+
+        <div id="loadingSpinner" class="text-center my-4 d-none">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="mt-2">Generating results...</div>
+        </div>
+
+
+
         <!-- Cards Sctions -->
 
         <section class="d-none justify-content-evenly flex-wrap mt-3" id="foundItemsId">
@@ -121,6 +134,18 @@
                 </div>
             </div>
         </section>
+
+
+
+        <section class="container d-none" id="phoneContainer">
+            <div id="results" class="results-container">
+                <div class="no-results">
+                    <h3>No Results Currently</h3>
+                    <p>Click "Load Sample Data" to view sample data</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Toast container will be appended here -->
