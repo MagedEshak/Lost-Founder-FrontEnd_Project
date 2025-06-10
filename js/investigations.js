@@ -1,10 +1,26 @@
+const lostItemInput = document.getElementById("lostSearch");
+const searchTypeSelect = document.getElementById("SearchTypID");
+const emailInput = document.getElementById("email");
+const typeSearchDiv = document.getElementById("searchType_div");
+const form = document.getElementById("Check-lostItems-form");
+let foundItems = document.getElementById("foundItemsId");
+let formSection = document.getElementById("formSection");
+let a = [
+  {
+    text_similarity: 0.5878,
+    face_verified: true,
+    face_distance: 0,
+    match_result: false,
+    face_images: {
+      lost_face: "http://localhost:8001/static/lostedcard/...",
+      found_face: "http://localhost:8001/static/foundedcard/...",
+    },
+    contact_info: {
+      found: "beboomagdy22@gmail.com",
+    },
+  },
+];
 document.addEventListener("DOMContentLoaded", function () {
-  const lostItemInput = document.getElementById("lostSearch");
-  const searchTypeSelect = document.getElementById("SearchTypID");
-  const emailInput = document.getElementById("email");
-  const typeSearchDiv = document.getElementById("searchType_div");
-  const form = document.getElementById("Check-lostItems-form");
-
   // إظهار أو إخفاء نوع البحث
   lostItemInput.addEventListener("change", function () {
     const value = lostItemInput.value.trim();
@@ -53,12 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasError) return;
 
     if (searchTypeSelectValue == "Image") {
+      // showFoundItems(a, lostItemInput.value, searchTypeItem);
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     } else if (searchTypeSelectValue == "Text") {
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     } else if (searchTypeSelectValue == "Both") {
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     }
+
+    showFoundItems(a, lostItem, searchTypeSelectValue);
   });
 
   function clearErrors() {
@@ -91,7 +110,7 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
       },
       success: function (data) {
         console.log("Matched Cards:", data);
-        showFoundItems(data, lostItem, searchTypeItem);
+        // showFoundItems(data, lostItem, searchTypeItem);
 
         if (data.length === 0) {
           // alert("⚠ No matching cards were found.");
@@ -103,7 +122,7 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
             "success",
             true
           );
-          showFoundItems(data, item, matchType);
+          // showFoundItems(data, item, matchType);
         }
       },
       error: function (xhr, status, error) {
@@ -174,13 +193,13 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
   }
 }
 
-let foundItems = document.getElementById("foundItemsId");
-let formSection = document.getElementById("formSection");
-
 function showFoundItems(items, lostItem, searchTypeItem) {
   let arrItms = items;
   foundItems.innerHTML = "";
-
+  formSection.classList.remove("d-flex");
+  formSection.classList.add("d-none");
+  foundItems.classList.remove("d-none");
+  foundItems.classList.add("d-flex");
   if (!arrItms || arrItms.length === 0) {
     return arrItms;
   } else {
