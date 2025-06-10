@@ -5,6 +5,30 @@ const typeSearchDiv = document.getElementById("searchType_div");
 const form = document.getElementById("Check-lostItems-form");
 let foundItems = document.getElementById("foundItemsId");
 let formSection = document.getElementById("formSection");
+
+function showSpinner() {
+  document.getElementById('spinner').style.display = 'block';
+}
+
+function hideSpinner() {
+  document.getElementById('spinner').style.display = 'none';
+}
+
+// Example usage with fetch
+// async function loadData() {
+//   showSpinner();
+//   try {
+//     const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+//     const data = await response.json();
+//     document.getElementById('content').innerText = JSON.stringify(data, null, 2);
+//   } catch (err) {
+//     document.getElementById('content').innerText = 'Error loading data';
+//   } finally {
+//     hideSpinner();
+//   }
+// }
+
+// loadData();
 let a = [
   {
     text_similarity: 0.5878,
@@ -125,8 +149,11 @@ document.addEventListener("DOMContentLoaded", function () {
 async function getFoundDataFromAPI(item, email, matchType) {
   if (item === "card") {
     const token = localStorage.getItem("token");
+      showSpinner();
+                 console.log("Sending request to match card"),
+
     $.ajax({
-      url: `https://localhost:7043/api/Checking_For_Items/matchCard?email=${encodeURIComponent(
+      url: `http://localhost:5194/api/Checking_For_Items/CardMatch?email=${encodeURIComponent(
         email
       )}&matchType=${encodeURIComponent(matchType)}`,
       type: "POST",
@@ -134,7 +161,10 @@ async function getFoundDataFromAPI(item, email, matchType) {
         Authorization: `Bearer ${token}`,
       },
       success: function (data) {
-        showFoundItems(data, lostItem, matchType);
+      console.log("Success response:", data);
+
+        hideSpinner();
+        showFoundItems(data, item, matchType);
 
         if (data.length === 0) {
           // alert("⚠ No matching cards were found.");
@@ -149,6 +179,10 @@ async function getFoundDataFromAPI(item, email, matchType) {
         }
       },
       error: function (xhr, status, error) {
+              console.log("error response");
+
+                hideSpinner();
+
         let message = "Unexpected error occurred.";
 
         if (xhr.status === 400) {
@@ -170,15 +204,20 @@ async function getFoundDataFromAPI(item, email, matchType) {
     });
   } else if (item === "Phone") {
     const token = localStorage.getItem("token");
+    showSpinner();
+               console.log("Sending request to match phone"),
+
     $.ajax({
-      url: `https://localhost:7043/api/Checking_For_Items/matchPhone?email=${encodeURIComponent(
+      url: `http://localhost:5194/api/Checking_For_Items/matchPhone?email=${encodeURIComponent(
         email
       )}&matchType=${encodeURIComponent(matchType)}`,
       type: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
+
       },
       success: function (data) {
+        hideSpinner();
         showFoundItems(data, lostItem, matchType);
 
         if (data.length === 0) {
@@ -194,6 +233,7 @@ async function getFoundDataFromAPI(item, email, matchType) {
         }
       },
       error: function (xhr, status, error) {
+            hideSpinner();
         let message = "Unexpected error occurred.";
 
         if (xhr.status === 400) {

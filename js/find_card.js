@@ -8,7 +8,7 @@ $(document).ready(function () {
     const Government = $("#government").val().trim();
     const Center = $("#center").val().trim();
     const Street = $("#street").val().trim();
-    const File = $("#fileInput")[0].files[0];
+    const FileImage = $("#fileInput")[0].files[0];
     const FinderEmail = $("#email").val().trim();
 
     let hasError = false;
@@ -36,7 +36,7 @@ $(document).ready(function () {
       hasError = true;
     }
 
-    if (!File) {
+    if (!FileImage) {
       $("#err_fileInput").text("Please upload a card image");
       hasError = true;
     }
@@ -55,11 +55,12 @@ $(document).ready(function () {
       formData.append("Government", Government);
       formData.append("Center", Center);
       formData.append("Street", Street);
-      formData.append("fileInput", File);
+      formData.append("CardPhoto", FileImage);
       formData.append("FinderEmail", FinderEmail);
-
+      console.log(FileImage);
+  
       const response = await fetch(
-        "https://localhost:7043/api/Find_Card/Add_Find_Card",
+        "http://localhost:5194/api/Find_Card/Add_Find_Card",
         {
           method: "POST",
           body: formData,
@@ -152,3 +153,4 @@ window.ShowBootstrapToast = function (
     toastElement.remove();
   });
 };
+

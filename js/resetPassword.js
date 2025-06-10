@@ -47,7 +47,7 @@ document
 
     try {
       const response = await fetch(
-        "https://localhost:7043/api/Auth/ResetPassword",
+        "http://localhost:5194/api/Auth/ResetPassword",
         {
           method: "POST",
           body: JSON.stringify({ token, newPassword }),
