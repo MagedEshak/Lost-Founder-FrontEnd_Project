@@ -3,7 +3,6 @@ body {
     /* background-color: #383848 !important; */
     background-color: #f7f5f2 !important;
     /* color: white !important; */
-
 }
 
 /* Header css */
@@ -81,4 +80,12 @@ input {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
+}
+
+#link {
+    color: #bfbaae;
+}
+
+#link:hover {
+    color: #8a857b;
 }
