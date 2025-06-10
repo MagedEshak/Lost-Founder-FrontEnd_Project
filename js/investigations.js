@@ -1,10 +1,26 @@
+const lostItemInput = document.getElementById("lostSearch");
+const searchTypeSelect = document.getElementById("SearchTypID");
+const emailInput = document.getElementById("email");
+const typeSearchDiv = document.getElementById("searchType_div");
+const form = document.getElementById("Check-lostItems-form");
+let foundItems = document.getElementById("foundItemsId");
+let formSection = document.getElementById("formSection");
+let a = [
+  {
+    text_similarity: 0.5878,
+    face_verified: true,
+    face_distance: 0,
+    match_result: false,
+    face_images: {
+      lost_face: "http://localhost:8001/static/lostedcard/...",
+      found_face: "http://localhost:8001/static/foundedcard/...",
+    },
+    contact_info: {
+      found: "beboomagdy22@gmail.com",
+    },
+  },
+];
 document.addEventListener("DOMContentLoaded", function () {
-  const lostItemInput = document.getElementById("lostSearch");
-  const searchTypeSelect = document.getElementById("SearchTypID");
-  const emailInput = document.getElementById("email");
-  const typeSearchDiv = document.getElementById("searchType_div");
-  const form = document.getElementById("Check-lostItems-form");
-
   // إظهار أو إخفاء نوع البحث
   lostItemInput.addEventListener("change", function () {
     const value = lostItemInput.value.trim();
@@ -53,12 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasError) return;
 
     if (searchTypeSelectValue == "Image") {
+      // showFoundItems(a, lostItemInput.value, searchTypeItem);
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     } else if (searchTypeSelectValue == "Text") {
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     } else if (searchTypeSelectValue == "Both") {
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     }
+
+    showFoundItems(a, lostItem, searchTypeSelectValue);
   });
 
   function clearErrors() {
@@ -91,17 +110,19 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
       },
       success: function (data) {
         console.log("Matched Cards:", data);
+        // showFoundItems(data, lostItem, searchTypeItem);
 
         if (data.length === 0) {
-          alert("⚠ No matching cards were found.");
+          // alert("⚠ No matching cards were found.");
+          ShowBootstrapToast("No matching cards were found", "danger");
         } else {
-          alert("Matching complete! Check console for results.");
+          // alert("Matching complete! Check console for results.");
           ShowBootstrapToast(
-            " Matching complete! Check console for results ",
+            " Matching complete, Wati for showing your matching  ",
             "success",
             true
           );
-          showFoundItems(data, item, matchType);
+          // showFoundItems(data, item, matchType);
         }
       },
       error: function (xhr, status, error) {
@@ -172,14 +193,13 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
   }
 }
 
-let foundItems = document.getElementById("foundItemsId");
-let formSection = document.getElementById("formSection");
-
 function showFoundItems(items, lostItem, searchTypeItem) {
-  let arrItms = [];
-  arrItms = items;
+  let arrItms = items;
   foundItems.innerHTML = "";
-
+  formSection.classList.remove("d-flex");
+  formSection.classList.add("d-none");
+  foundItems.classList.remove("d-none");
+  foundItems.classList.add("d-flex");
   if (!arrItms || arrItms.length === 0) {
     return arrItms;
   } else {
@@ -221,7 +241,7 @@ function showFoundItems(items, lostItem, searchTypeItem) {
           "card-img-top border border-3 border-danger"
         );
 
-        createLostImageSRC.src = "#";
+        createLostImageSRC.src = `${e.face_images.lost_face}`;
         createLostImg.append(createLostHeader);
         createLostImg.append(createLostImageSRC);
 
@@ -237,7 +257,7 @@ function showFoundItems(items, lostItem, searchTypeItem) {
           "card-img-top border border-3 border-danger"
         );
 
-        createFoundImageSRC.src = "#";
+        createFoundImageSRC.src = `${e.face_images.found_face}`;
         createFoundImg.append(createFoundHeader);
         createFoundImg.append(createFoundImageSRC);
 
@@ -253,43 +273,43 @@ function showFoundItems(items, lostItem, searchTypeItem) {
 
       let TextSimilaritySpan = document.createElement("span");
       TextSimilaritySpan.classList.add("text-success");
-      TextSimilaritySpan.textContent = e.TextSimilarity;
+      TextSimilaritySpan.textContent = e.text_similarity;
       TextSimilarity.append(TextSimilaritySpan);
 
       //------------------- FaceVerified -------------------------------
       let FaceVerified = document.createElement("h5");
       FaceVerified.classList.add("card-title d-inline");
-
+      FaceVerified.textContent = "Face Verified : ";
       let FaceVerifiedSpan = document.createElement("span");
       FaceVerifiedSpan.classList.add("text-success");
-      FaceVerifiedSpan.textContent = e.FaceVerified;
+      FaceVerifiedSpan.textContent = e.face_verified;
       FaceVerified.append(FaceVerifiedSpan);
 
       //------------------- Face Distance -------------------------------
       let FaceDistance = document.createElement("h5");
       FaceDistance.classList.add("card-title d-inline");
-
+      FaceDistance.textContent = " Face Distance :";
       let FaceDistanceSpan = document.createElement("span");
       FaceDistanceSpan.classList.add("text-success");
-      FaceDistanceSpan.textContent = e.FaceDistance;
+      FaceDistanceSpan.textContent = e.face_distance;
       FaceDistance.append(FaceDistanceSpan);
 
       //------------------- Match Result -------------------------------
       let MatchResult = document.createElement("h5");
       MatchResult.classList.add("card-title d-inline");
-
+      MatchResult.textContent = "Match Result :";
       let MatchResultSpan = document.createElement("span");
       MatchResultSpan.classList.add("text-success");
-      MatchResultSpan.textContent = e.MatchResult;
+      MatchResultSpan.textContent = e.match_result;
       MatchResult.append(MatchResultSpan);
 
       //------------------- Contact Info -------------------------------
       let ContactInfo = document.createElement("h5");
       ContactInfo.classList.add("card-title d-inline");
-
+      ContactInfo.textContent = "Contact Info : ";
       let ContactInfoSpan = document.createElement("span");
       ContactInfoSpan.classList.add("text-success");
-      ContactInfoSpan.textContent = e.ContactInfo;
+      ContactInfoSpan.textContent = e.contact_info.found;
       ContactInfo.append(ContactInfoSpan);
 
       //------------------- Appinding -------------------------------
