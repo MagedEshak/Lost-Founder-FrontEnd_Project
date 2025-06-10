@@ -1,10 +1,52 @@
+const lostItemInput = document.getElementById("lostSearch");
+const searchTypeSelect = document.getElementById("SearchTypID");
+const emailInput = document.getElementById("email");
+const typeSearchDiv = document.getElementById("searchType_div");
+const form = document.getElementById("Check-lostItems-form");
+let foundItems = document.getElementById("foundItemsId");
+let formSection = document.getElementById("formSection");
+let a = [
+  {
+    text_similarity: 0.5878,
+    face_verified: true,
+    face_distance: 0,
+    match_result: false,
+    face_images: {
+      lost_face: "http://localhost:8001/static/lostedcard/...",
+      found_face: "http://localhost:8001/static/foundedcard/...",
+    },
+    contact_info: {
+      found: "beboomagdy22@gmail.com",
+    },
+  },
+  {
+    text_similarity: 0.5878,
+    face_verified: true,
+    face_distance: 0,
+    match_result: false,
+    face_images: {
+      lost_face: "http://localhost:8001/static/lostedcard/...",
+      found_face: "http://localhost:8001/static/foundedcard/...",
+    },
+    contact_info: {
+      found: "beboomagdy22@gmail.com",
+    },
+  },
+  {
+    text_similarity: 0.5878,
+    face_verified: true,
+    face_distance: 0,
+    match_result: false,
+    face_images: {
+      lost_face: "http://localhost:8001/static/lostedcard/...",
+      found_face: "http://localhost:8001/static/foundedcard/...",
+    },
+    contact_info: {
+      found: "beboomagdy22@gmail.com",
+    },
+  },
+];
 document.addEventListener("DOMContentLoaded", function () {
-  const lostItemInput = document.getElementById("lostSearch");
-  const searchTypeSelect = document.getElementById("SearchTypID");
-  const emailInput = document.getElementById("email");
-  const typeSearchDiv = document.getElementById("searchType_div");
-  const form = document.getElementById("Check-lostItems-form");
-
   // إظهار أو إخفاء نوع البحث
   lostItemInput.addEventListener("change", function () {
     const value = lostItemInput.value.trim();
@@ -59,6 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (searchTypeSelectValue == "Both") {
       await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
     }
+
+    // showFoundItems(a, lostItem, searchTypeSelectValue);
   });
 
   function clearErrors() {
@@ -78,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-async function getFoundDataFromAPI(item, email, matchType = "Image") {
+async function getFoundDataFromAPI(item, email, matchType) {
   if (item === "card") {
     const token = localStorage.getItem("token");
     $.ajax({
@@ -90,18 +134,18 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
         Authorization: `Bearer ${token}`,
       },
       success: function (data) {
-        console.log("Matched Cards:", data);
+        showFoundItems(data, lostItem, matchType);
 
         if (data.length === 0) {
-          alert("⚠ No matching cards were found.");
+          // alert("⚠ No matching cards were found.");
+          ShowBootstrapToast("No matching cards were found", "danger");
         } else {
-          alert("Matching complete! Check console for results.");
+          // alert("Matching complete! Check console for results.");
           ShowBootstrapToast(
-            " Matching complete! Check console for results ",
+            " Matching complete, Wati for showing your matching  ",
             "success",
             true
           );
-          showFoundItems(data, item, matchType);
         }
       },
       error: function (xhr, status, error) {
@@ -135,7 +179,7 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
         Authorization: `Bearer ${token}`,
       },
       success: function (data) {
-        console.log("Matched Cards:", data);
+        showFoundItems(data, lostItem, matchType);
 
         if (data.length === 0) {
           alert("No matching cards were found.");
@@ -172,135 +216,142 @@ async function getFoundDataFromAPI(item, email, matchType = "Image") {
   }
 }
 
-let foundItems = document.getElementById("foundItemsId");
-let formSection = document.getElementById("formSection");
+function showFormAgain() {
+  foundItems.classList.remove("d-flex");
+  foundItems.classList.add("d-none");
+  formSection.classList.remove("d-none");
+  formSection.classList.add("d-flex");
+
+  // مسح الفورم
+  document.getElementById("lostSearch").value = "";
+  document.getElementById("SearchTypID").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("searchType_div").classList.add("d-none");
+  document.querySelector("#link").classList.add("d-none");
+  document.querySelector("#link").classList.remove("d-block");
+}
+
+document.querySelector("#link a").addEventListener("click", () => {
+  showFormAgain();
+});
 
 function showFoundItems(items, lostItem, searchTypeItem) {
-  let arrItms = [];
-  arrItms = items;
+  let arrItms = items;
   foundItems.innerHTML = "";
+  formSection.classList.remove("d-flex");
+  formSection.classList.add("d-none");
+  foundItems.classList.remove("d-none");
+  foundItems.classList.add("d-flex");
+  document.querySelector("#link").classList.remove("d-none");
+  document.querySelector("#link").classList.add("d-block");
 
   if (!arrItms || arrItms.length === 0) {
-    return arrItms;
-  } else {
-    ShowBootstrapToast("Cards Found", "success", true);
-    foundItems.classList.remove("d-flex");
-    formSection.classList.add("d-none");
-
-    foundItems.classList.remove("d-none");
-    foundItems.classList.add("d-flex");
-
-    arrItms.forEach((e) => {
-      let createDivParent = document.createElement("div");
-      createDivParent.classList.add("card mb-3 p-3");
-      createDivParent.style.width = "20rem";
-      foundItems.append(createDivParent);
-
-      let createMainHeder = document.createElement("h4");
-      createMainHeder.classList.add("text-center");
-      createMainHeder.textContent = `Found ${lostItem}`;
-      createDivParent.append(createMainHeder);
-
-      if (searchTypeItem !== "Text") {
-        let createMainDiveImgs = document.createElement("div");
-        createMainDiveImgs.classList.add(
-          "d-flex justify-content-between mb-3 text-center"
-        );
-        createDivParent.append(createMainDiveImgs);
-
-        let createLostImg = document.createElement("div");
-        createLostImg.classList.add("me-3");
-        createMainDiveImgs.append(createLostImg);
-
-        let createLostHeader = document.createElement("h5");
-        createLostHeader.classList.add("card-title");
-        createLostHeader.textContent = "Lost Image";
-
-        let createLostImageSRC = document.createElement("img");
-        createLostImageSRC.classList.add(
-          "card-img-top border border-3 border-danger"
-        );
-
-        createLostImageSRC.src = "#";
-        createLostImg.append(createLostHeader);
-        createLostImg.append(createLostImageSRC);
-
-        let createFoundImg = document.createElement("div");
-        createMainDiveImgs.append(createFoundImg);
-
-        let createFoundHeader = document.createElement("h5");
-        createFoundHeader.classList.add("card-title");
-        createFoundHeader.textContent = "Found Image";
-
-        let createFoundImageSRC = document.createElement("img");
-        createFoundImageSRC.classList.add(
-          "card-img-top border border-3 border-danger"
-        );
-
-        createFoundImageSRC.src = "#";
-        createFoundImg.append(createFoundHeader);
-        createFoundImg.append(createFoundImageSRC);
-
-        createDivParent.append(createMainDiveImgs);
-      }
-
-      let createDivData = document.createElement("div");
-      createDivData.classList.add("card-body");
-
-      //------------------- Text Similarity -------------------------------
-      let TextSimilarity = document.createElement("h5");
-      TextSimilarity.classList.add("card-title d-inline");
-
-      let TextSimilaritySpan = document.createElement("span");
-      TextSimilaritySpan.classList.add("text-success");
-      TextSimilaritySpan.textContent = e.TextSimilarity;
-      TextSimilarity.append(TextSimilaritySpan);
-
-      //------------------- FaceVerified -------------------------------
-      let FaceVerified = document.createElement("h5");
-      FaceVerified.classList.add("card-title d-inline");
-
-      let FaceVerifiedSpan = document.createElement("span");
-      FaceVerifiedSpan.classList.add("text-success");
-      FaceVerifiedSpan.textContent = e.FaceVerified;
-      FaceVerified.append(FaceVerifiedSpan);
-
-      //------------------- Face Distance -------------------------------
-      let FaceDistance = document.createElement("h5");
-      FaceDistance.classList.add("card-title d-inline");
-
-      let FaceDistanceSpan = document.createElement("span");
-      FaceDistanceSpan.classList.add("text-success");
-      FaceDistanceSpan.textContent = e.FaceDistance;
-      FaceDistance.append(FaceDistanceSpan);
-
-      //------------------- Match Result -------------------------------
-      let MatchResult = document.createElement("h5");
-      MatchResult.classList.add("card-title d-inline");
-
-      let MatchResultSpan = document.createElement("span");
-      MatchResultSpan.classList.add("text-success");
-      MatchResultSpan.textContent = e.MatchResult;
-      MatchResult.append(MatchResultSpan);
-
-      //------------------- Contact Info -------------------------------
-      let ContactInfo = document.createElement("h5");
-      ContactInfo.classList.add("card-title d-inline");
-
-      let ContactInfoSpan = document.createElement("span");
-      ContactInfoSpan.classList.add("text-success");
-      ContactInfoSpan.textContent = e.ContactInfo;
-      ContactInfo.append(ContactInfoSpan);
-
-      //------------------- Appinding -------------------------------
-      createDivParent.append(createDivData);
-      createDivData.append(TextSimilarity);
-      createDivData.append(FaceVerified);
-      createDivData.append(FaceDistance);
-      createDivData.append(MatchResult);
-      createDivData.append(ContactInfo);
-    });
+    return;
   }
+
+  ShowBootstrapToast("Cards Found", "success", true);
+
+  arrItms.forEach((e) => {
+    let createDivParent = document.createElement("div");
+    createDivParent.classList.add("card", "mb-3", "p-3");
+    createDivParent.style.width = "20rem";
+    foundItems.appendChild(createDivParent);
+
+    let createMainHeder = document.createElement("h4");
+    createMainHeder.classList.add("text-center");
+    createMainHeder.textContent = `${lostItem} has been found`;
+    createDivParent.appendChild(createMainHeder);
+
+    if (searchTypeItem !== "Text") {
+      let createMainDiveImgs = document.createElement("div");
+      createMainDiveImgs.classList.add(
+        "d-flex",
+        "justify-content-between",
+        "mb-3",
+        "text-center"
+      );
+      createDivParent.appendChild(createMainDiveImgs);
+
+      let createLostImg = document.createElement("div");
+      createLostImg.classList.add("me-3");
+      createMainDiveImgs.appendChild(createLostImg);
+
+      let createLostHeader = document.createElement("h5");
+      createLostHeader.classList.add("card-title");
+      createLostHeader.textContent = "Lost Image";
+
+      let createLostImageSRC = document.createElement("img");
+      createLostImageSRC.classList.add(
+        "card-img-top",
+        "border",
+        "border-3",
+        "border-danger"
+      );
+      createLostImageSRC.src = e.face_images.lost_face;
+      createLostImageSRC.alt = "No Image Found";
+      createLostImageSRC.style.maxWidth = "150px";
+      createLostImageSRC.style.height = "auto";
+
+      createLostImg.appendChild(createLostHeader);
+      createLostImg.appendChild(createLostImageSRC);
+
+      let createFoundImg = document.createElement("div");
+      createMainDiveImgs.appendChild(createFoundImg);
+
+      let createFoundHeader = document.createElement("h5");
+      createFoundHeader.classList.add("card-title");
+      createFoundHeader.textContent = "Found Image";
+
+      let createFoundImageSRC = document.createElement("img");
+      createFoundImageSRC.classList.add(
+        "card-img-top",
+        "border",
+        "border-3",
+        "border-success"
+      );
+      createFoundImageSRC.src = e.face_images.found_face;
+      createFoundImageSRC.alt = "No Found Image";
+      createFoundImageSRC.style.maxWidth = "150px";
+      createFoundImageSRC.style.height = "auto";
+
+      createFoundImg.appendChild(createFoundHeader);
+      createFoundImg.appendChild(createFoundImageSRC);
+    }
+
+    let createDivData = document.createElement("div");
+    createDivData.classList.add("card-body");
+
+    let TextSimilarity = document.createElement("h5");
+    TextSimilarity.classList.add("card-title", "d-block", "mb-2");
+    TextSimilarity.innerHTML = `Text Similarity: <span class="text-success">${e.text_similarity}</span>`;
+
+    let FaceVerified = document.createElement("h5");
+    FaceVerified.classList.add("card-title", "d-block", "mb-2");
+    FaceVerified.innerHTML = `Face Verified: <span class="text-success">${
+      e.face_verified ? "True" : "False"
+    }</span>`;
+
+    let FaceDistance = document.createElement("h5");
+    FaceDistance.classList.add("card-title", "d-block", "mb-2");
+    FaceDistance.innerHTML = `FaceDistance: <span class="text-success">${e.face_distance}</span>`;
+
+    let MatchResult = document.createElement("h5");
+    MatchResult.classList.add("card-title", "d-block", "mb-2");
+    MatchResult.innerHTML = `Match Result: <span class="text-success">${
+      e.match_result ? "Match" : "Not Match"
+    }</span>`;
+
+    let ContactInfo = document.createElement("h5");
+    ContactInfo.classList.add("card-title", "d-block", "mb-2");
+    ContactInfo.innerHTML = `Contact Info: <span class="text-success">${e.contact_info.found}</span>`;
+
+    createDivParent.appendChild(createDivData);
+    createDivData.appendChild(TextSimilarity);
+    createDivData.appendChild(FaceVerified);
+    createDivData.appendChild(FaceDistance);
+    createDivData.appendChild(MatchResult);
+    createDivData.appendChild(ContactInfo);
+  });
 }
 
 // -----------------------  TostBox (Popup Message)    ----------------------------------
@@ -319,8 +370,8 @@ window.ShowBootstrapToast = function (
                           withButtons
                             ? `
                         <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Add Another</button>
-                            <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Check your lost items</button>
+                            <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Check another Item</button>
+                            <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Go Home</button>
                         </div>`
                             : ""
                         }
@@ -349,10 +400,11 @@ window.ShowBootstrapToast = function (
     toastElement
       .querySelector("#btn-add-new")
       .addEventListener("click", function () {
-        $("#lost-phone-form")[0].reset();
+        showFormAgain();
+        $("#Check-lostItems-form")[0].reset();
         $("#preview").attr(
           "src",
-          "images/id-card-illustration_23-2147829294.avif"
+          "../../images/id-card-illustration_23-2147829294.avif"
         );
         $(".error-msg").text("");
         toast.hide();
@@ -361,7 +413,7 @@ window.ShowBootstrapToast = function (
     toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        window.location.replace("Investigations.html");
+        window.location.replace("../../../index.html");
       });
   }
 

@@ -20,7 +20,14 @@
             </div>
         </header>
 
-        <section class="row d-none" id="formSection">
+
+        <div class="text-center d-none" id="link">
+            <a href="#" class="text-decoration-none fs-5 m-4 text-center">Go to Investigation Form</a>
+        </div>
+
+
+
+        <section class="row" id="formSection">
             <div class="text-center mb-5">
                 <h2 class="text-secondary">Check Items Form</h2>
             </div>
@@ -42,8 +49,7 @@
                         <span class="text-danger error-msg" id="err_lostSearch_id"></span>
                     </div>
 
-
-                    <div class="mb-3 d-none flex-column" id="searchType_div">
+                    <div class=" mb-3 d-none flex-column" id="searchType_div">
                         <label for="SearchTypID" class="form-label">Search type</label>
                         <select name="SearchTyp" id="SearchTypID" class="list-group p-2 w-100">
                             <option value="" disabled selected>Select the type of search</option>
@@ -53,7 +59,6 @@
                         </select>
                         <span class="text-danger error-msg" id="err_SearchTyp_id"></span>
                     </div>
-
 
                     <div class="mb-3">
                         <label class="form-label" for="email">Email</label>
@@ -65,24 +70,23 @@
             </form>
         </section>
 
-
         <!-- Cards Sctions -->
 
-        <section class="d-flex justify-content-evenly flex-wrap mt-3" id="foundItemsId">
-            <div class="card mb-3 p-3 shadow" style="width: 20rem;">
+        <section class="d-none justify-content-evenly flex-wrap mt-3" id="foundItemsId">
+            <div class="card mb-3 p-3 shadow" style="width: 20rem">
                 <h4 class="text-center">Cards Found</h4>
 
                 <div class="d-flex justify-content-between mb-3 text-center">
                     <div class="me-3">
                         <h5 class="card-title">Lost Image</h5>
                         <img src="../../images/360_F_301830112_dSHXcFf9OHOj6HBpaDsAa1gAtz3hwheP.jpg" alt=""
-                            class="card-img-top border border-3 border-danger">
+                            class="card-img-top border border-3 border-danger" />
                     </div>
 
                     <div>
                         <h5 class="card-title">Found Image</h5>
                         <img src="../../images/360_F_301830112_dSHXcFf9OHOj6HBpaDsAa1gAtz3hwheP.jpg" alt=""
-                            class="card-img-top border border-3 border-success">
+                            class="card-img-top border border-3 border-success" />
                     </div>
                 </div>
 
@@ -91,12 +95,11 @@
                     <h5 class="card-title">Face Verified: <span class="text-success">True</span></h5>
                     <h5 class="card-title">Face Distance: <span class="text-success">1.2</span></h5>
                     <h5 class="card-title">Match Result: <span class="text-success">True</span></h5>
-                    <h5 class="card-title">Contact Info: <span class="text-danger">foundPerson@gmail.com</span></h5>
+                    <h5 class="card-title">Contact Info:
+                        <span class="text-danger">foundPerson@gmail.com</span>
+                    </h5>
                 </div>
             </div>
-
-
-
         </section>
     </main>
 
