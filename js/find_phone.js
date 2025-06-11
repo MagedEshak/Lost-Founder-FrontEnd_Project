@@ -59,7 +59,7 @@ $(document).ready(function () {
       formData.append("Government", Government);
       formData.append("Center", Center);
       formData.append("Street", Street);
-      formData.append("fileInput", fileInput);
+      formData.append("PhonePhoto", fileInput);
       formData.append("FinderEmail", FinderEmail);
 
       const response = await fetch(
