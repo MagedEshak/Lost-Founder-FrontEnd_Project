@@ -57,7 +57,7 @@ document.getElementById("resetForm").addEventListener("submit", async function (
   if (!isValid) return;
 
   try {
-    const response = await fetch("hhttp://localhost:5194/api/Auth/reset-password-with-code", {
+    const response = await fetch("http://localhost:5194/api/Auth/reset-password-with-code", {
       method: "POST",
       body: JSON.stringify({ email, code, newPassword }),
       headers: {
