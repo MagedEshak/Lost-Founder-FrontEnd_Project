@@ -201,126 +201,123 @@ function showFoundItems(items, lostItem, searchTypeItem) {
   foundItems.classList.remove("d-none");
   foundItems.classList.add("d-flex");
   if (!arrItms || arrItms.length === 0) {
-    return arrItms;
-  } else {
-    ShowBootstrapToast("Cards Found", "success", true);
-    foundItems.classList.remove("d-flex");
-    formSection.classList.add("d-none");
-
-    foundItems.classList.remove("d-none");
-    foundItems.classList.add("d-flex");
-
-    arrItms.forEach((e) => {
-      let createDivParent = document.createElement("div");
-      createDivParent.classList.add("card mb-3 p-3");
-      createDivParent.style.width = "20rem";
-      foundItems.append(createDivParent);
-
-      let createMainHeder = document.createElement("h4");
-      createMainHeder.classList.add("text-center");
-      createMainHeder.textContent = `Found ${lostItem}`;
-      createDivParent.append(createMainHeder);
-
-      if (searchTypeItem !== "Text") {
-        let createMainDiveImgs = document.createElement("div");
-        createMainDiveImgs.classList.add(
-          "d-flex justify-content-between mb-3 text-center"
-        );
-        createDivParent.append(createMainDiveImgs);
-
-        let createLostImg = document.createElement("div");
-        createLostImg.classList.add("me-3");
-        createMainDiveImgs.append(createLostImg);
-
-        let createLostHeader = document.createElement("h5");
-        createLostHeader.classList.add("card-title");
-        createLostHeader.textContent = "Lost Image";
-
-        let createLostImageSRC = document.createElement("img");
-        createLostImageSRC.classList.add(
-          "card-img-top border border-3 border-danger"
-        );
-
-        createLostImageSRC.src = `${e.face_images.lost_face}`;
-        createLostImg.append(createLostHeader);
-        createLostImg.append(createLostImageSRC);
-
-        let createFoundImg = document.createElement("div");
-        createMainDiveImgs.append(createFoundImg);
-
-        let createFoundHeader = document.createElement("h5");
-        createFoundHeader.classList.add("card-title");
-        createFoundHeader.textContent = "Found Image";
-
-        let createFoundImageSRC = document.createElement("img");
-        createFoundImageSRC.classList.add(
-          "card-img-top border border-3 border-danger"
-        );
-
-        createFoundImageSRC.src = `${e.face_images.found_face}`;
-        createFoundImg.append(createFoundHeader);
-        createFoundImg.append(createFoundImageSRC);
-
-        createDivParent.append(createMainDiveImgs);
-      }
-
-      let createDivData = document.createElement("div");
-      createDivData.classList.add("card-body");
-
-      //------------------- Text Similarity -------------------------------
-      let TextSimilarity = document.createElement("h5");
-      TextSimilarity.classList.add("card-title d-inline");
-
-      let TextSimilaritySpan = document.createElement("span");
-      TextSimilaritySpan.classList.add("text-success");
-      TextSimilaritySpan.textContent = e.text_similarity;
-      TextSimilarity.append(TextSimilaritySpan);
-
-      //------------------- FaceVerified -------------------------------
-      let FaceVerified = document.createElement("h5");
-      FaceVerified.classList.add("card-title d-inline");
-      FaceVerified.textContent = "Face Verified : ";
-      let FaceVerifiedSpan = document.createElement("span");
-      FaceVerifiedSpan.classList.add("text-success");
-      FaceVerifiedSpan.textContent = e.face_verified;
-      FaceVerified.append(FaceVerifiedSpan);
-
-      //------------------- Face Distance -------------------------------
-      let FaceDistance = document.createElement("h5");
-      FaceDistance.classList.add("card-title d-inline");
-      FaceDistance.textContent = " Face Distance :";
-      let FaceDistanceSpan = document.createElement("span");
-      FaceDistanceSpan.classList.add("text-success");
-      FaceDistanceSpan.textContent = e.face_distance;
-      FaceDistance.append(FaceDistanceSpan);
-
-      //------------------- Match Result -------------------------------
-      let MatchResult = document.createElement("h5");
-      MatchResult.classList.add("card-title d-inline");
-      MatchResult.textContent = "Match Result :";
-      let MatchResultSpan = document.createElement("span");
-      MatchResultSpan.classList.add("text-success");
-      MatchResultSpan.textContent = e.match_result;
-      MatchResult.append(MatchResultSpan);
-
-      //------------------- Contact Info -------------------------------
-      let ContactInfo = document.createElement("h5");
-      ContactInfo.classList.add("card-title d-inline");
-      ContactInfo.textContent = "Contact Info : ";
-      let ContactInfoSpan = document.createElement("span");
-      ContactInfoSpan.classList.add("text-success");
-      ContactInfoSpan.textContent = e.contact_info.found;
-      ContactInfo.append(ContactInfoSpan);
-
-      //------------------- Appinding -------------------------------
-      createDivParent.append(createDivData);
-      createDivData.append(TextSimilarity);
-      createDivData.append(FaceVerified);
-      createDivData.append(FaceDistance);
-      createDivData.append(MatchResult);
-      createDivData.append(ContactInfo);
-    });
+    return;
   }
+  ShowBootstrapToast("Cards Found", "success", true);
+  arrItms.forEach((e) => {
+    let createDivParent = document.createElement("div");
+    createDivParent.classList.add("card", "mb-3", " p-3");
+    createDivParent.style.width = "20rem";
+    foundItems.append(createDivParent);
+
+    let createMainHeder = document.createElement("h4");
+    createMainHeder.classList.add("text-center");
+    createMainHeder.textContent = `Found ${lostItem}`;
+    createDivParent.append(createMainHeder);
+
+    if (searchTypeItem !== "Text") {
+      let createMainDiveImgs = document.createElement("div");
+      createMainDiveImgs.classList.add(
+        "d-flex",
+        "justify-content-between",
+        " mb-3",
+        " text-center"
+      );
+      createDivParent.append(createMainDiveImgs);
+
+      let createLostImg = document.createElement("div");
+      createLostImg.classList.add("me-3");
+      createMainDiveImgs.append(createLostImg);
+
+      let createLostHeader = document.createElement("h5");
+      createLostHeader.classList.add("card-title");
+      createLostHeader.textContent = "Lost Image";
+
+      let createLostImageSRC = document.createElement("img");
+      createLostImageSRC.classList.add(
+        "card-img-top",
+        "border border-3 border-danger"
+      );
+
+      createLostImageSRC.src = `${e.face_images.lost_face}`;
+      createLostImg.append(createLostHeader);
+      createLostImg.append(createLostImageSRC);
+
+      let createFoundImg = document.createElement("div");
+      createMainDiveImgs.append(createFoundImg);
+
+      let createFoundHeader = document.createElement("h5");
+      createFoundHeader.classList.add("card-title");
+      createFoundHeader.textContent = "Found Image";
+
+      let createFoundImageSRC = document.createElement("img");
+      createFoundImageSRC.classList.add(
+        "card-img-top border border-3 border-danger"
+      );
+
+      createFoundImageSRC.src = `${e.face_images.found_face}`;
+      createFoundImg.append(createFoundHeader);
+      createFoundImg.append(createFoundImageSRC);
+
+      createDivParent.append(createMainDiveImgs);
+    }
+
+    let createDivData = document.createElement("div");
+    createDivData.classList.add("card-body");
+
+    //------------------- Text Similarity -------------------------------
+    let TextSimilarity = document.createElement("h5");
+    TextSimilarity.classList.add("card-title d-inline");
+
+    let TextSimilaritySpan = document.createElement("span");
+    TextSimilaritySpan.classList.add("text-success");
+    TextSimilaritySpan.textContent = e.text_similarity;
+    TextSimilarity.append(TextSimilaritySpan);
+
+    //------------------- FaceVerified -------------------------------
+    let FaceVerified = document.createElement("h5");
+    FaceVerified.classList.add("card-title d-inline");
+    FaceVerified.textContent = "Face Verified : ";
+    let FaceVerifiedSpan = document.createElement("span");
+    FaceVerifiedSpan.classList.add("text-success");
+    FaceVerifiedSpan.textContent = e.face_verified;
+    FaceVerified.append(FaceVerifiedSpan);
+
+    //------------------- Face Distance -------------------------------
+    let FaceDistance = document.createElement("h5");
+    FaceDistance.classList.add("card-title d-inline");
+    FaceDistance.textContent = " Face Distance :";
+    let FaceDistanceSpan = document.createElement("span");
+    FaceDistanceSpan.classList.add("text-success");
+    FaceDistanceSpan.textContent = e.face_distance;
+    FaceDistance.append(FaceDistanceSpan);
+
+    //------------------- Match Result -------------------------------
+    let MatchResult = document.createElement("h5");
+    MatchResult.classList.add("card-title d-inline");
+    MatchResult.textContent = "Match Result :";
+    let MatchResultSpan = document.createElement("span");
+    MatchResultSpan.classList.add("text-success");
+    MatchResultSpan.textContent = e.match_result;
+    MatchResult.append(MatchResultSpan);
+
+    //------------------- Contact Info -------------------------------
+    let ContactInfo = document.createElement("h5");
+    ContactInfo.classList.add("card-title d-inline");
+    ContactInfo.textContent = "Contact Info : ";
+    let ContactInfoSpan = document.createElement("span");
+    ContactInfoSpan.classList.add("text-success");
+    ContactInfoSpan.textContent = e.contact_info.found;
+    ContactInfo.append(ContactInfoSpan);
+
+    //------------------- Appinding -------------------------------
+    createDivParent.append(createDivData);
+    createDivData.append(TextSimilarity);
+    createDivData.append(FaceVerified);
+    createDivData.append(FaceDistance);
+    createDivData.append(MatchResult);
+    createDivData.append(ContactInfo);
+  });
 }
 
 // -----------------------  TostBox (Popup Message)    ----------------------------------
