@@ -23,7 +23,7 @@ document
 
     try {
       const response = await fetch(
-        "https://localhost:7043/api/Auth/RequestPasswordReset",
+        "http://localhost:5194/api/Auth/request-reset-code",
         {
           method: "POST",
           body: JSON.stringify({ email }),
@@ -39,26 +39,22 @@ document
           "Check your email for reset instructions.",
           "success"
         );
+           setTimeout(() => {
+        window.location.replace("resetPassword.html");
+      }, 2000)
+
       } else {
         // showAlert("Email not found or server error.", "danger");
         ShowBootstrapToast("Email not found or server error.", "danger");
       }
     } catch (error) {
       // showAlert("Something went wrong. Try again", "info");
-      ShowBootstrapToast("Something went wrong. Try again", "info");
+      ("Something went wrong. Try again", "danger");
     }
   });
-// function showAlert(message, type = "success") {
-//   const alertBox = document.getElementById("alertBox");
-//   alertBox.textContent = message;
-//   alertBox.className = `alert alert-${type} mt-3`; // success, danger, warning, etc.
-//   alertBox.classList.remove("d-none");
 
-//   // Auto-hide after 3 seconds
-//   setTimeout(() => {
-//     alertBox.classList.add("d-none");
-//   }, 3000);
-// }
+  
+//----------------------------------------------------------------------------------------
 window.ShowBootstrapToast = function (
   message,
   type = "Info",

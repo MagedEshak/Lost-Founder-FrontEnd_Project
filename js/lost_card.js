@@ -55,11 +55,11 @@ $(document).ready(function () {
       formData.append("Government", Government);
       formData.append("Center", Center);
       formData.append("Street", Street);
-      formData.append("fileInput", fileInput);
+      formData.append("CardPhoto", fileInput);
       formData.append("ForiegnKey_UserEmail", ForiegnKey_UserEmail);
 
       const response = await fetch(
-        "https://localhost:7043/api/Lost_Card/Add_Losted_Card",
+        "http://localhost:5194/api/Lost_Card/Add_Losted_Card",
         {
           method: "POST",
           body: formData,
