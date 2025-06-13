@@ -5,14 +5,85 @@ const typeSearchDiv = document.getElementById("searchType_div");
 const form = document.getElementById("Check-lostItems-form");
 let foundItems = document.getElementById("foundItemsId");
 let formSection = document.getElementById("formSection");
-
+let spinner = document.getElementById("loadingSpinner");
 function showSpinner() {
-  document.getElementById("spinner").style.display = "block";
+  spinner.classList.remove("d-none");
+  spinner.classList.add("d-block");
 }
 
 function hideSpinner() {
-  document.getElementById("spinner").style.display = "none";
+  spinner.classList.remove("d-block");
+  spinner.classList.add("d-none");
 }
+// -----------------------  TostBox (Popup Message)    ----------------------------------
+window.ShowBootstrapToast = function (
+  message,
+  type = "Info",
+  withButtons = false
+) {
+  const toastId = "custom-toast-" + Date.now();
+  const toastHTML = `
+        <div id="${toastId}" class="toast align-items-center text-white bg-${type.toLowerCase()} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body w-100">
+                    ${message}
+                    ${
+                      withButtons
+                        ? `
+                    <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Check another Item</button>
+                        <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Go Home</button>
+                    </div>`
+                        : ""
+                    }
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    `;
+
+  let toastContainer = document.getElementById("toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.id = "toast-container";
+    toastContainer.className =
+      "toast-container position-fixed bottom-0 end-0 p-3";
+    document.body.appendChild(toastContainer);
+  }
+
+  toastContainer.innerHTML += toastHTML;
+
+  const toastElement = document.getElementById(toastId);
+  const toast = new bootstrap.Toast(toastElement, { delay: 7000 });
+  toast.show();
+
+  if (withButtons) {
+    toastElement
+      .querySelector("#btn-add-new")
+      .addEventListener("click", function () {
+        showFormAgain();
+        $("#Check-lostItems-form")[0].reset();
+        $("#preview").attr(
+          "src",
+          "../../images/id-card-illustration_23-2147829294.avif"
+        );
+        $(".error-msg").text("");
+        toast.hide();
+      });
+
+    toastElement
+      .querySelector("#btn-go-home")
+      .addEventListener("click", function () {
+        window.location.replace("../../../index.html");
+      });
+  }
+
+  toastElement.addEventListener("hidden.bs.toast", function () {
+    toastElement.remove();
+  });
+};
+
+//--------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
   lostItemInput.addEventListener("change", function () {
@@ -54,8 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (hasError) return;
 
-    showSpinner();
-
     try {
       if (searchTypeSelectValue == "Image") {
         await getFoundDataFromAPI(lostItem, email, searchTypeSelectValue);
@@ -67,9 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error while fetching data:", error);
     } finally {
-      hideSpinner();
     }
-
   });
 
   function clearErrors() {
@@ -83,18 +150,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-function showSpinner() {
-  document.getElementById("loadingSpinner").classList.remove("d-none");
-}
-
-function hideSpinner() {
-  document.getElementById("loadingSpinner").classList.add("d-none");
-}
-
 async function getFoundDataFromAPI(item, email, matchType) {
+  showSpinner();
   if (item === "card") {
     const token = localStorage.getItem("token");
-    showSpinner();
+
     console.log("Sending request to match card"),
       $.ajax({
         url: `http://localhost:5194/api/Checking_For_Items/CardMatch?email=${encodeURIComponent(
@@ -107,7 +167,6 @@ async function getFoundDataFromAPI(item, email, matchType) {
         success: function (data) {
           console.log("Success response:", data);
 
-          hideSpinner();
           showFoundItems(data, item, matchType);
 
           if (data.length === 0) {
@@ -121,11 +180,10 @@ async function getFoundDataFromAPI(item, email, matchType) {
               true
             );
           }
+          hideSpinner();
         },
         error: function (xhr, status, error) {
           console.log("error response");
-
-          hideSpinner();
 
           let message = "Unexpected error occurred.";
 
@@ -142,13 +200,13 @@ async function getFoundDataFromAPI(item, email, matchType) {
             response: xhr.responseText,
             error: error,
           });
-
           ShowBootstrapToast(message, "danger");
+          hideSpinner();
         },
       });
   } else if (item === "Phone") {
     const token = localStorage.getItem("token");
-    showSpinner();
+
     console.log("Sending request to match phone"),
       $.ajax({
         url: `http://localhost:5194/api/Checking_For_Items/matchPhone?email=${encodeURIComponent(
@@ -159,7 +217,6 @@ async function getFoundDataFromAPI(item, email, matchType) {
           Authorization: `Bearer ${token}`,
         },
         success: function (data) {
-          hideSpinner();
           displayResults(data);
           if (data.length === 0) {
             alert("No matching cards were found.");
@@ -172,9 +229,9 @@ async function getFoundDataFromAPI(item, email, matchType) {
             );
             showFoundItems(data, item, matchType);
           }
+          hideSpinner();
         },
         error: function (xhr, status, error) {
-          hideSpinner();
           let message = "Unexpected error occurred.";
 
           if (xhr.status === 400) {
@@ -190,8 +247,8 @@ async function getFoundDataFromAPI(item, email, matchType) {
             response: xhr.responseText,
             error: error,
           });
-
           ShowBootstrapToast(message, "danger");
+          hideSpinner();
         },
       });
   }
@@ -223,6 +280,7 @@ function showFoundItems(items, lostItem, searchTypeItem) {
   formSection.classList.add("d-none");
   foundItems.classList.remove("d-none");
   foundItems.classList.add("d-flex");
+
   document.querySelector("#link").classList.remove("d-none");
   document.querySelector("#link").classList.add("d-block");
 
@@ -414,83 +472,6 @@ function showFoundItems(items, lostItem, searchTypeItem) {
       createDivData.appendChild(MatchResult);
       createDivData.appendChild(ContactInfo);
     });
-
-    // -----------------------  TostBox (Popup Message)    ----------------------------------
-    window.ShowBootstrapToast = function (
-      message,
-      type = "Info",
-      withButtons = false
-    ) {
-      const toastId = "custom-toast-" + Date.now();
-      const toastHTML = `
-            <div id="${toastId}" class="toast align-items-center text-white bg-${type.toLowerCase()} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body w-100">
-                        ${message}
-                        ${
-                          withButtons
-                            ? `
-                        <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Check another Item</button>
-                            <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Go Home</button>
-                        </div>`
-                            : ""
-                        }
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        `;
-
-      let toastContainer = document.getElementById("toast-container");
-      if (!toastContainer) {
-        toastContainer = document.createElement("div");
-        toastContainer.id = "toast-container";
-        toastContainer.className =
-          "toast-container position-fixed bottom-0 end-0 p-3";
-        document.body.appendChild(toastContainer);
-      }
-
-      toastContainer.innerHTML += toastHTML;
-
-      const toastElement = document.getElementById(toastId);
-      const toast = new bootstrap.Toast(toastElement, { delay: 7000 });
-      toast.show();
-
-      if (withButtons) {
-        toastElement
-          .querySelector("#btn-add-new")
-          .addEventListener("click", function () {
-            showFormAgain();
-            $("#Check-lostItems-form")[0].reset();
-            $("#preview").attr(
-              "src",
-              "../../images/id-card-illustration_23-2147829294.avif"
-            );
-            $(".error-msg").text("");
-            toast.hide();
-          });
-
-        toastElement
-          .querySelector("#btn-go-home")
-          .addEventListener("click", function () {
-            window.location.replace("../../../index.html");
-          });
-      }
-
-      toastElement.addEventListener("hidden.bs.toast", function () {
-        toastElement.remove();
-      });
-    };
-
-    //--------------------------------------------------------------------------------
-    function showSpinner() {
-      document.getElementById("loadingSpinner").classList.remove("d-none");
-    }
-
-    function hideSpinner() {
-      document.getElementById("loadingSpinner").classList.add("d-none");
-    }
   }
 }
 
@@ -584,40 +565,38 @@ function createScoreCard(value, label) {
 function createPhoneDetailsSection(phoneData) {
   if (!phoneData) return null;
 
-const title = createElement("h3", {}, "Phone Details");
+  const title = createElement("h3", {}, "Phone Details");
 
-const phoneImage = document.createElement("img");
-phoneImage.src = phoneData.image_url;
-phoneImage.alt = "Phone Image";
-phoneImage.style.maxWidth = "200px"; // تعديل حسب الحجم المطلوب
+  const phoneImage = document.createElement("img");
+  phoneImage.src = phoneData.image_url;
+  phoneImage.alt = "Phone Image";
+  phoneImage.style.maxWidth = "200px"; // تعديل حسب الحجم المطلوب
 
-const detailsGrid = createElement("div", { className: "details-grid" }, "", [
-  createDetailItem("Governorate:", phoneData.governorate),
-  createDetailItem("City:", phoneData.city),
-  createDetailItem("Street:", phoneData.street),
-  createDetailItem("Brand:", phoneData.brand),
-  createDetailItem("Color:", phoneData.color),
-  createDetailItem("Contact:", phoneData.contact),
-]);
+  const detailsGrid = createElement("div", { className: "details-grid" }, "", [
+    createDetailItem("Governorate:", phoneData.governorate),
+    createDetailItem("City:", phoneData.city),
+    createDetailItem("Street:", phoneData.street),
+    createDetailItem("Brand:", phoneData.brand),
+    createDetailItem("Color:", phoneData.color),
+    createDetailItem("Contact:", phoneData.contact),
+  ]);
 
-// سطر منفصل للصورة
-detailsGrid.appendChild(phoneImage);
+  // سطر منفصل للصورة
+  detailsGrid.appendChild(phoneImage);
 
-return createElement("div", {}, "", [title, detailsGrid]);
+  return createElement("div", {}, "", [title, detailsGrid]);
 }
 
 // Create image card element
 function createImageCard(imageData) {
   const phoneImage = document.createElement("img");
-phoneImage.src = imageData.image_url;
-phoneImage.alt = "Phone Image";
-phoneImage.style.maxWidth = "200px"; 
+  phoneImage.src = imageData.image_url;
+  phoneImage.alt = "Phone Image";
+  phoneImage.style.maxWidth = "200px";
 
-
-  const imagePlaceholder = createElement(
-    "div",
-    { className: "image-placeholder" }
-  );
+  const imagePlaceholder = createElement("div", {
+    className: "image-placeholder",
+  });
   imagePlaceholder.appendChild(phoneImage);
   const imageSimilarity = createElement(
     "div",
@@ -633,16 +612,10 @@ phoneImage.style.maxWidth = "200px";
       { className: "details-grid" },
       "",
       [
-
-        
         createElement("div", { className: "detail-item" }, "", [
-        createElement(
-          "div",
-            { className: "details-grid" },
-             "Phone Details", 
-        ),
-        
-         createElement(
+          createElement("div", { className: "details-grid" }, "Phone Details"),
+
+          createElement(
             "span",
             { className: "detail-label" },
             imageData.associated_data.brand
@@ -652,47 +625,42 @@ phoneImage.style.maxWidth = "200px";
             { className: "detail-value" },
             imageData.associated_data.color
           ),
-
         ]),
         createElement("div", { className: "detail-item" }, "", [
-           createElement(
-          "div",
+          createElement(
+            "div",
             { className: "details-grid" },
-              "Found Phone Location"  , 
-        ),
-        
-            createElement(
+            "Found Phone Location"
+          ),
+
+          createElement(
             "span",
             { className: "detail-label" },
             imageData.associated_data.governorate
-          ), 
+          ),
           createElement(
             "span",
             { className: "detail-label" },
             imageData.associated_data.city
           ),
-            createElement(
+          createElement(
             "span",
             { className: "detail-label" },
             imageData.associated_data.street
           ),
-      
         ]),
         createElement("div", { className: "detail-item" }, "", [
           createElement(
-          "div",
+            "div",
             { className: "details-grid" },
-          "Contact With Founder"    , 
-        ),
-        
-      
-            createElement(
+            "Contact With Founder"
+          ),
+
+          createElement(
             "span",
             { className: "detail-label" },
             imageData.associated_data.contact
-          ), 
-        
-
+          ),
         ]),
       ]
     );
