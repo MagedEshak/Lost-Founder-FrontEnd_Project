@@ -58,7 +58,7 @@ $(document).ready(function () {
       formData.append("CardPhoto", FileImage);
       formData.append("FinderEmail", FinderEmail);
       console.log(FileImage);
-  
+
       const response = await fetch(
         "http://localhost:5194/api/Find_Card/Add_Find_Card",
         {
@@ -71,6 +71,7 @@ $(document).ready(function () {
       );
 
       if (response.ok) {
+        $("#register-card-2-form")[0].reset();
         ShowBootstrapToast(
           "Card added successfully. What would you like to do next?",
           "success",
@@ -136,7 +137,7 @@ window.ShowBootstrapToast = function (
         $("#register-card-2-form")[0].reset();
         $("#preview").attr(
           "src",
-          "images/id-card-illustration_23-2147829294.avif"
+          "../../images/id-card-illustration_23-2147829294.avif"
         );
         $(".error-msg").text("");
         toast.hide();
@@ -153,4 +154,3 @@ window.ShowBootstrapToast = function (
     toastElement.remove();
   });
 };
-

@@ -40,7 +40,7 @@ $(document).ready(function () {
     }
 
     if (!fileInput) {
-      $("#err_fileInput").text("Please upload a card image");
+      $("#err_fileInput").text("Please upload a Phone image");
       hasError = true;
     }
 
@@ -74,8 +74,9 @@ $(document).ready(function () {
       );
 
       if (response.ok) {
+        $("#find-phone-form")[0].reset();
         ShowBootstrapToast(
-          "Card added successfully. What would you like to do next?",
+          "Phone added successfully. What would you like to do next?",
           "success",
           true
         );
@@ -139,7 +140,7 @@ window.ShowBootstrapToast = function (
         $("#find-phone-form")[0].reset();
         $("#preview").attr(
           "src",
-          "images/id-card-illustration_23-2147829294.avif"
+          "../../images/Hand-Holding-Smartmobile-Phone-Cartoon-Graphics-64594596-1.jpg"
         );
         $(".error-msg").text("");
         toast.hide();

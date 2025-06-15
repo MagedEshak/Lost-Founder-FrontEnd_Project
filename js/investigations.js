@@ -63,10 +63,7 @@ window.ShowBootstrapToast = function (
       .addEventListener("click", function () {
         showFormAgain();
         $("#Check-lostItems-form")[0].reset();
-        $("#preview").attr(
-          "src",
-          "../../images/id-card-illustration_23-2147829294.avif"
-        );
+
         $(".error-msg").text("");
         toast.hide();
       });
@@ -74,7 +71,7 @@ window.ShowBootstrapToast = function (
     toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        window.location.replace("../../../index.html");
+        window.location.replace("index.html");
       });
   }
 
@@ -165,65 +162,13 @@ async function getFoundDataFromAPI(item, email, matchType) {
           Authorization: `Bearer ${token}`,
         },
         success: function (data) {
-          console.log("Success response:", data);
-
-          showFoundItems(data, item, matchType);
-
           if (data.length === 0) {
             // alert("⚠ No matching cards were found.");
             ShowBootstrapToast("No matching cards were found", "danger");
           } else {
-            // alert("Matching complete! Check console for results.");
+            $("#Check-lostItems-form")[0].reset();
             ShowBootstrapToast(
-              " Matching complete, Wati for showing your matching  ",
-              "success",
-              true
-            );
-          }
-          hideSpinner();
-        },
-        error: function (xhr, status, error) {
-          console.log("error response");
-
-          let message = "Unexpected error occurred.";
-
-          if (xhr.status === 400) {
-            message = xhr.responseText;
-          } else if (xhr.status === 500) {
-            message = "Server Error: " + xhr.responseText;
-          } else if (xhr.status === 0) {
-            message = "Request failed. Are you offline or is the server down?";
-          }
-
-          console.error("Error Details:", {
-            status: xhr.status,
-            response: xhr.responseText,
-            error: error,
-          });
-          ShowBootstrapToast(message, "danger");
-          hideSpinner();
-        },
-      });
-  } else if (item === "Phone") {
-    const token = localStorage.getItem("token");
-
-    console.log("Sending request to match phone"),
-      $.ajax({
-        url: `http://localhost:5194/api/Checking_For_Items/matchPhone?email=${encodeURIComponent(
-          email
-        )}&matchType=${encodeURIComponent(matchType)}`,
-        type: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        success: function (data) {
-          displayResults(data);
-          if (data.length === 0) {
-            alert("No matching cards were found.");
-          } else {
-            alert("Matching complete! Check console for results.");
-            ShowBootstrapToast(
-              " Matching complete! Check console for results ",
+              " Matching complete, wait for showing your matching  ",
               "success",
               true
             );
@@ -242,11 +187,46 @@ async function getFoundDataFromAPI(item, email, matchType) {
             message = "Request failed. Are you offline or is the server down?";
           }
 
-          console.error("Error Details:", {
-            status: xhr.status,
-            response: xhr.responseText,
-            error: error,
-          });
+          ShowBootstrapToast(message, "danger");
+          hideSpinner();
+        },
+      });
+  } else if (item === "Phone") {
+    const token = localStorage.getItem("token");
+
+    console.log("Sending request to match phone"),
+      $.ajax({
+        url: `http://localhost:5194/api/Checking_For_Items/matchPhone?email=${encodeURIComponent(
+          email
+        )}&matchType=${encodeURIComponent(matchType)}`,
+        type: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        success: function (data) {
+          if (data.length === 0) {
+            ShowBootstrapToast(" No matching cards were found.", "danged");
+          } else {
+            $("#Check-lostItems-form")[0].reset();
+            ShowBootstrapToast(
+              " Matching complete! Check console for results ",
+              "success",
+              true
+            );
+            displayResults(data);
+          }
+          hideSpinner();
+        },
+        error: function (xhr, status, error) {
+          let message = "Unexpected error occurred.";
+
+          if (xhr.status === 400) {
+            message = xhr.responseText;
+          } else if (xhr.status === 500) {
+            message = "Server Error: " + xhr.responseText;
+          } else if (xhr.status === 0) {
+            message = "Request failed. Are you offline or is the server down?";
+          }
           ShowBootstrapToast(message, "danger");
           hideSpinner();
         },
@@ -474,32 +454,6 @@ function showFoundItems(items, lostItem, searchTypeItem) {
     });
   }
 }
-
-// const sampleData = [
-//   {
-//     match_type: "Both",
-//     matched: 1,
-//     final_score: 0.95,
-//     text_similarity: 0.92,
-//     text_best_match: {
-//       governorate: "Cairo",
-//       city: "Nasr City",
-//       street: "Mostafa El-Nahas Street",
-//       contact: "maged@gmail.com",
-//       brand: "iPhone",
-//       color: "Black",
-//       image_url: "https://example.com/image1.jpg",
-//     },
-//     image_similarity: 0.98,
-//     matched_images: [
-//       {
-//         image_url: "https://example.com/match1.jpg",
-//         image_similarity: 0.98,
-//         associated_data: null,
-//       }
-//     ],
-//   },
-// ];
 
 function hideDivs() {
   document.getElementById("results").innerHTML = "";
@@ -794,27 +748,3 @@ function displayResults(data) {
     resultsContainer.appendChild(matchCard);
   });
 }
-
-function loadSampleData() {
-  displayResults(sampleData);
-}
-
-// Function to load data from API (you can modify this)
-// async function loadDataFromAPI() {
-//   try {
-//     // Replace with your actual API endpoint
-//     const response = await fetch("/api/mobile-match");
-//     const data = await response.json();
-//     displayResults(data);
-//   } catch (error) {
-//     console.error("Error loading data:", error);
-//     const resultsContainer = document.getElementById("results");
-
-//     // Clear existing content
-//     while (resultsContainer.firstChild) {
-//       resultsContainer.removeChild(resultsContainer.firstChild);
-//     }
-
-//     resultsContainer.appendChild(createErrorMessage());
-//   }
-// }

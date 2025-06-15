@@ -70,8 +70,9 @@ $(document).ready(function () {
       );
 
       if (response.ok) {
+        $("#register-card-form")[0].reset();
         ShowBootstrapToast(
-          "Card added successfully. What would you like to do next?",
+          "Your Loost Card added successfully. What would you like to do next?",
           "success",
           true
         );
@@ -101,9 +102,8 @@ window.ShowBootstrapToast = function (
                       ${
                         withButtons
                           ? `
-                      <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
-                          <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Add Another</button>
-                          <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Check your lost items</button>
+                      <div class="mt-2 pt-2 border-top d-flex justify-content-center gap-2">
+                          <button type="button" class="btn btn-light btn-sm" id="btn-go-home">Check your lost items</button>
                       </div>`
                           : ""
                       }
@@ -130,23 +130,9 @@ window.ShowBootstrapToast = function (
 
   if (withButtons) {
     toastElement
-      .querySelector("#btn-add-new")
-      .addEventListener("click", function () {
-        $("#register-card-form")[0].reset();
-        $("#preview").attr(
-          "src",
-          "images/id-card-illustration_23-2147829294.avif"
-        );
-        $(".error-msg").text("");
-        toast.hide();
-      });
-
-    toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        window.location.replace(
-          "../htmlStaticFiles/InvestenationPage/investigations.html"
-        );
+        window.location.replace("../../investigations.html");
       });
   }
 

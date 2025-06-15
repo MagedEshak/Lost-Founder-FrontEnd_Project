@@ -41,7 +41,7 @@ $(document).ready(function () {
     }
 
     if (!fileInput) {
-      $("#err_fileInput").text("Please upload a card image");
+      $("#err_fileInput").text("Please upload a Phone image");
       hasError = true;
     }
 
@@ -74,7 +74,12 @@ $(document).ready(function () {
       );
 
       if (response.ok) {
-        ShowBootstrapToast("Cards Found", "success", true);
+        $("#lost-phone-form")[0].reset();
+        $("#preview").attr(
+          "src",
+          "../../images/Hand-Holding-Smartmobile-Phone-Cartoon-Graphics-64594596-1.jpg"
+        );
+        ShowBootstrapToast("Your Lost Phone Added Successfully.  What would you like to do next?", "success", true);
       } else {
         const errorData = await response.text();
         ShowBootstrapToast("Error: " + errorData, "danger");
@@ -94,24 +99,23 @@ window.ShowBootstrapToast = function (
 ) {
   const toastId = "custom-toast-" + Date.now();
   const toastHTML = `
-            <div id="${toastId}" class="toast align-items-center text-white bg-${type.toLowerCase()} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body w-100">
-                        ${message}
-                        ${
-                          withButtons
-                            ? `
-                        <div class="mt-2 pt-2 border-top d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-light btn-sm" id="btn-add-new">Add Another</button>
-                            <button type="button" class="btn btn-outline-light btn-sm" id="btn-go-home">Check your lost items</button>
-                        </div>`
-                            : ""
-                        }
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        `;
+          <div id="${toastId}" class="toast align-items-center text-white bg-${type.toLowerCase()} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                  <div class="toast-body w-100">
+                      ${message}
+                      ${
+                        withButtons
+                          ? `
+                      <div class="mt-2 pt-2 border-top d-flex justify-content-center gap-2">
+                          <button type="button" class="btn btn-light btn-sm" id="btn-go-home">Check your lost items</button>
+                      </div>`
+                          : ""
+                      }
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+          </div>
+      `;
 
   let toastContainer = document.getElementById("toast-container");
   if (!toastContainer) {
@@ -129,23 +133,10 @@ window.ShowBootstrapToast = function (
   toast.show();
 
   if (withButtons) {
-    toastElement
-      .querySelector("#btn-add-new")
-      .addEventListener("click", function () {
-        $("#lost-phone-form")[0].reset();
-        $("#preview").attr(
-          "src",
-          "images/id-card-illustration_23-2147829294.avif"
-        );
-        $(".error-msg").text("");
-        toast.hide();
-      });
-
-    toastElement
+      toastElement
       .querySelector("#btn-go-home")
       .addEventListener("click", function () {
-        resetForm();
-        window.location.replace("../InvestenationPage/Investigations.html");
+        window.location.replace("../../investigations.html");
       });
   }
 
@@ -153,9 +144,7 @@ window.ShowBootstrapToast = function (
     toastElement.remove();
   });
 };
-
 function resetForm() {
- 
 
   $("#serial_number").val() = "";
   $("#brandID").val() = "";
